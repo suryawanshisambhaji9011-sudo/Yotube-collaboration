@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Creator Connect</title>
+  <meta name="description" content="Creator Connect helps creators discover each other and collaborate genuinely." />
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --bg-2: #eef4ff;
+      --card: #ffffff;
+      --card-2: #f8fafc;
+      --text: #132033;
+      --muted: #58657a;
+      --primary: #4f46e5;
+      --primary-2: #7c3aed;
+      --accent: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --border: rgba(17, 24, 39, 0.08);
+      --shadow: 0 12px 32px rgba(31, 41, 55, 0.08);
+      --hero: linear-gradient(135deg, #eef2ff 0%, #f5f3ff 45%, #ecfeff 100%);
+      --chip: rgba(79, 70, 229, 0.09);
+      --input: #f7f8fb;
+      --success: #0f9f6e;
+    }
+
+    body.dark {
+      --bg: #0b1220;
+      --bg-2: #111827;
+      --card: #101a2c;
+      --card-2: #0f172a;
+      --text: #edf3ff;
+      --muted: #aab6ca;
+      --primary: #7c8cff;
+      --primary-2: #9c6bff;
+      --accent: #4ade80;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --border: rgba(148, 163, 184, 0.16);
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
+      --hero: linear-gradient(135deg, #0b1730 0%, #101b2d 40%, #111827 100%);
+      --chip: rgba(124, 140, 255, 0.12);
+      --input: #0f172a;
+      --success: #27d18a;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(244, 247, 251, 0.72);
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.dark .topbar {
+      background: rgba(11, 18, 32, 0.74);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      gap: 14px;
+      width: min(1180px, calc(100% - 24px));
+      margin: 0 auto;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      font-size: 1.1rem;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      display: grid;
+      place-items: center;
+      box-shadow: var(--shadow);
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lang-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px;
+      box-shadow: var(--shadow);
+    }
+
+    .lang-btn, .theme-toggle, .primary-btn, .ghost-btn, .chip, .card-btn, .small-btn {
+      transition: all 0.2s ease;
+      border: none;
+      cursor: pointer;
+    }
+
+    .lang-btn {
+      background: transparent;
+      color: var(--muted);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 8px 18px rgba(79, 70, 229, 0.26);
+    }
+
+    .theme-toggle {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      width: 42px;
+      height: 42px;
+      font-size: 1.1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      background: var(--hero);
+      border-bottom: 1px solid var(--border);
+      padding: 36px 0 24px;
+    }
+
+    .hero-inner {
+      display: grid;
+      gap: 28px;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    .hero-copy {
+      display: grid;
+      gap: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border: 1px solid rgba(79, 70, 229, 0.18);
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.02em;
+    }
+
+    body.dark .eyebrow {
+      background: rgba(17, 24, 39, 0.5);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 4rem);
+      line-height: 1.06;
+      letter-spacing: -0.05em;
+    }
+
+    .subtext {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.04rem;
+      line-height: 1.7;
+      max-width: 760px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .primary-btn, .ghost-btn, .small-btn {
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      box-shadow: 0 12px 24px rgba(79, 70, 229, 0.22);
+    }
+
+    .ghost-btn {
+      background: var(--card);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .small-btn {
+      padding: 10px 12px;
+      min-height: 38px;
+      border-radius: 10px;
+      font-size: 0.86rem;
+    }
+
+    .primary-btn:hover, .ghost-btn:hover, .small-btn:hover, .lang-btn:hover, .theme-toggle:hover, .chip:hover, .card-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .search-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: rgba(255,255,255,0.3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+
+    body.dark .search-wrap {
+      background: rgba(9, 14, 24, 0.25);
+    }
+
+    .search-input {
+      flex: 1 1 240px;
+      min-width: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 16px;
+      outline: none;
+    }
+
+    .search-input:focus, .filter-select:focus, .form-control:focus {
+      border-color: rgba(79, 70, 229, 0.6);
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+      outline: none;
+    }
+
+    .chip-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      background: var(--chip);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      font-size: 0.86rem;
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.22);
+    }
+
+    .section {
+      padding: 28px 0 16px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .section-header h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2vw, 2.1rem);
+      letter-spacing: -0.04em;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .filter-label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .filter-select {
+      background: var(--input);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      padding: 10px 12px;
+      min-width: 160px;
+    }
+
+    .creator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .creator-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+    }
+
+    .creator-banner {
+      position: relative;
+      min-height: 112px;
+      background: linear-gradient(135deg, #dbeafe, #f5d0fe, #d1fae5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    body.dark .creator-banner {
+      background: linear-gradient(135deg, #172554, #312e81, #0f766e);
+    }
+
+    .creator-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid rgba(255,255,255,0.84);
+      background: #fff;
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(15, 23, 42, 0.78);
+      color: white;
+      border-radius: 999px;
+      padding: 6px 9px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .creator-body {
+      display: flex;
+      flex-direction: column;
+      padding: 18px 16px 14px;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .creator-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .creator-name {
+      margin: 0;
+      font-size: 1.12rem;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .meta-pill {
+      background: var(--chip);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 7px 10px;
+      border-radius: 999px;
+    }
+
+    .description {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.95rem;
+      flex: 1;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .card-btn {
+      flex: 1 1 120px;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      background: var(--chip);
+      color: var(--text);
+    }
+
+    .card-btn.primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: white;
+    }
+
+    .card-btn.success {
+      background: rgba(34, 197, 94, 0.12);
+      color: var(--success);
+      border-color: rgba(34, 197, 94, 0.18);
+    }
+
+    .card-btn.share-whatsapp {
+      background: rgba(37, 211, 102, 0.12);
+      color: #1db954;
+      border-color: rgba(37, 211, 102, 0.2);
+    }
+
+    .card-btn.share-telegram {
+      background: rgba(59, 130, 246, 0.12);
+      color: #1d4ed8;
+      border-color: rgba(59, 130, 246, 0.2);
+    }
+
+    .no-results {
+      display: none;
+      margin-top: 14px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 16px;
+      color: var(--muted);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(15, 23, 42, 0.5);
+      z-index: 40;
+    }
+
+    .modal.show {
+      display: grid;
+    }
+
+    .modal-card {
+      width: min(680px, 100%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 30px 90px rgba(15, 23, 42, 0.28);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.25rem;
+      letter-spacing: -0.03em;
+    }
+
+    .close-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--input);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .form {
+      padding: 18px 20px 20px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    .field label {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .form-control, .form-textarea {
+      width: 100%;
+      background: var(--input);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 14px;
+      outline: none;
+    }
+
+    .form-textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .form-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 20px;
+      background: rgba(15, 23, 42, 0.92);
+      color: white;
+      padding: 12px 16px;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(15,23,42,0.28);
+      transform: translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 60;
+      max-width: 90vw;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .safety {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      margin: 26px auto 40px;
+      padding: 18px 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .safety strong {
+      color: var(--danger);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 700px) {
+      .hero {
+        padding-top: 20px;
+      }
+
+      .search-wrap {
+        padding: 10px;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        min-height: 64px;
+      }
+
+      .brand {
+        font-size: 1rem;
+      }
+
+      .topbar .nav-actions {
+        gap: 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="nav">
+      <a href="#" class="brand" aria-label="Creator Connect">
+        <span class="brand-mark">C</span>
+        <span id="brandText">Creator Connect</span>
+      </a>
+
+      <div class="nav-actions">
+        <div class="lang-switcher" aria-label="Language switcher">
+          <button type="button" class="lang-btn active" data-lang="en">EN</button>
+          <button type="button" class="lang-btn" data-lang="hi">हिं</button>
+          <button type="button" class="lang-btn" data-lang="mr">मर</button>
+        </div>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">🌙</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <span class="eyebrow" id="eyebrowText">Creator Discovery Platform</span>
+        <h1 id="heroTitle">Find Creators. Collaborate. Grow Together.</h1>
+        <p class="subtext" id="heroSubtitle">
+          Genuine creator discovery and collaboration for YouTubers and content creators — without fake engagement, forced subs, or spammy tactics.
+        </p>
+
+        <div class="hero-actions">
+          <button class="primary-btn" id="addChannelButton" type="button">＋ <span id="addChannelText">Add Your Channel</span></button>
+        </div>
+
+        <div class="search-wrap" aria-label="Search creators">
+          <input
+            id="searchInput"
+            class="search-input"
+            type="search"
+            placeholder="Search creators or channels..."
+            aria-label="Search creators"
+          />
+          <button class="primary-btn" id="searchButton" type="button">🔎 <span id="searchBtnText">Search</span></button>
+        </div>
+
+        <div class="chip-list" id="categoryChips"></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="container">
+    <section class="section">
+      <div class="section-header">
+        <h2 id="featuredTitle">Featured Creators</h2>
+      </div>
+
+      <div class="filters">
+        <div class="filter-group">
+          <span class="filter-label" id="filterLabel">Filters</span>
+          <select id="categoryFilter" class="filter-select" aria-label="Category filter">
+            <option value="all" id="allCategoryOpt">All Categories</option>
+          </select>
+          <select id="languageFilter" class="filter-select" aria-label="Language filter">
+            <option value="all" id="allLanguageOpt">All Languages</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="creatorGrid" class="creator-grid" aria-live="polite"></div>
+      <div id="noResults" class="no-results" role="alert"></div>
+    </section>
+
+    <section class="safety">
+      <strong id="safetyTitle">Safety:</strong>
+      <span id="safetyText">
+        Creator Connect is a platform for genuine creator discovery and collaboration. We do not support fake engagement or forced subscriptions.
+      </span>
+    </section>
+  </main>
+
+  <div id="channelModal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add Your Channel</h3>
+        <button type="button" class="close-btn" id="closeModalBtn" aria-label="Close form">×</button>
+      </div>
+
+      <form id="channelForm" class="form" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="creatorName">Creator Name</label>
+            <input id="creatorName" class="form-control" type="text" placeholder="e.g. Aditi Shah" />
+          </div>
+
+          <div class="field">
+            <label for="youtubeChannelName">YouTube Channel Name</label>
+            <input id="youtubeChannelName" class="form-control" type="text" placeholder="e.g. Aditi Vlogs" />
+          </div>
+
+          <div class="field">
+            <label for="youtubeUrl">YouTube Channel URL</label>
+            <input id="youtubeUrl" class="form-control" type="url" placeholder="https://youtube.com/@yourchannel" />
+          </div>
+
+          <div class="field">
+            <label for="category">Category</label>
+            <select id="category" class="form-control">
+              <option value="">Select category</option>
+              <option value="Gaming">Gaming</option>
+              <option value="Music">Music</option>
+              <option value="Vlog">Vlog</option>
+              <option value="Education">Education</option>
+              <option value="Technology">Technology</option>
+              <option value="Comedy">Comedy</option>
+              <option value="Shorts">Shorts</option>
+              <option value="Cooking">Cooking</option>
+              <option value="Travel">Travel</option>
+              <option value="Kids/Family">Kids/Family</option>
+              <option value="Fitness">Fitness</option>
+              <option value="Marathi Creator">Marathi Creator</option>
+              <option value="Hindi Creator">Hindi Creator</option>
+              <option value="English Creator">English Creator</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="language">Language</label>
+            <select id="language" class="form-control">
+              <option value="">Select language</option>
+              <option value="English">English</option>
+              <option value="Hindi">Hindi</option>
+              <option value="Marathi">Marathi</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="collabType">Collaboration Type</label>
+            <select id="collabType" class="form-control">
+              <option value="">Select collaboration type</option>
+              <option value="Guest Appearances">Guest Appearances</option>
+              <option value="Cross Promotion">Cross Promotion</option>
+              <option value="Podcast / Interview">Podcast / Interview</option>
+              <option value="Brand Collaboration">Brand Collaboration</option>
+              <option value="Video Collaboration">Video Collaboration</option>
+              <option value="Shorts Collab">Shorts Collab</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label for="shortDescription">Short Description</label>
+            <textarea id="shortDescription" class="form-textarea" placeholder="Tell people what your channel is about"></textarea>
+          </div>
+
+          <div class="field full">
+            <label for="contact">WhatsApp / Telegram Contact (optional)</label>
+            <input id="contact" class="form-control" type="text" placeholder="e.g. https://wa.me/919999999999 or https://t.me/yourchannel" />
+          </div>
+
+          <div class="field full">
+            <label for="profileImage">Profile Image URL (optional)</label>
+            <input id="profileImage" class="form-control" type="url" placeholder="https://example.com/profile.jpg" />
+          </div>
+        </div>
+
+        <div class="helper">
+          We do not support fake subscribers, fake views, fake likes, or artificial engagement exchange. Use genuine creator collaboration only.
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="ghost-btn" id="cancelBtn">Cancel</button>
+          <button type="submit" class="primary-btn">Save Channel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const STORAGE_KEY = "creator-connect-creators-v1";
+    const THEME_KEY = "creator-connect-theme-v1";
+    const LANG_KEY = "creator-connect-language-v1";
+
+    const demoCreators = [
+      {
+        id: "demo-1",
+        name: "Pixel Play",
+        channelName: "Pixel Play Studio",
+        url: "https://www.youtube.com/@pixelplaystudio",
+        category: "Gaming",
+        language: "English",
+        description: "Gaming highlights, walkthroughs, live reactions, and creator challenges.",
+        collabType: "Video Collaboration",
+        contact: "https://wa.me/919999999999",
+        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=80",
+        demo: true,
+        featured: true
+      },
+      {
+        id: "demo-2",
+        name: "Saarang Beats",
+        channelName: "Saarang Beats",
+        url: "https://www.youtube.com/@saarangbeats",
+        category: "Music",
+        language: "Hindi",
+        description: "Original music, covers, and creative audio experiments for indie artists.",
+        collabType: "Cross Promotion",
+        contact: "https://t.me/saarangbeats",
+        image: "https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=600&q=80",
+        demo: true,
+        featured: true
+      },
+      {
+        id: "demo-3",
+        name: "Marathi Mile",
+        channelName: "Marathi Mile Vlogs",
+        url: "https://www.youtube.com/@marathimile",
+        category: "Marathi Creator",
+        language: "Marathi",
+        description: "Stories, local travel vlogs, and cultural highlights from Maharashtra.",
+        collabType: "Guest Appearances",
+        contact: "",
+        image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=600&q=80",
+        demo: true,
+        featured: true
+      },
+      {
+        id: "demo-4",
+        name: "NextSkill Academy",
+        channelName: "NextSkill Academy",
+        url: "https://www.youtube.com/@nextskillacademy",
+        category: "Education",
+        language: "English",
+        description: "Learning videos, creator tips, digital skills, and productivity guidance.",
+        collabType: "Podcast / Interview",
+        contact: "https://wa.me/919876543210",
+        image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80",
+        demo: true,
+        featured: false
+      },
+      {
+        id: "demo-5",
+        name: "Chai & Craft",
+        channelName: "Chai & Craft",
+        url: "https://www.youtube.com/@chaiandcraft",
+        category: "Cooking",
+        language: "Hindi",
+        description: "Simple recipes, kitchen experiments, and food storytelling with a fun vibe.",
+        collabType: "Brand Collaboration",
+        contact: "https://t.me/chaiandcraft",
+        image: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=600&q=80",
+        demo: true,
+        featured: false
+      },
+      {
+        id: "demo-6",
+        name: "Travel Byte",
+        channelName: "Travel Byte Adventures",
+        url: "https://www.youtube.com/@travelbyteadventures",
+        category: "Travel",
+        language: "English",
+        description: "Short cinematic travel stories, local food finds, and budget tips.",
+        collabType: "Shorts Collab",
+        contact: "",
+        image: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=600&q=80",
+        demo: true,
+        featured: false
+      }
+    ];
+
+    const translations = {
+      en: {
+        brand: "Creator Connect",
+        eyebrow: "Creator Discovery Platform",
+        heroTitle: "Find Creators. Collaborate. Grow Together.",
+        subtitle: "Genuine creator discovery and collaboration for YouTubers and content creators — without fake engagement, forced subs, or spammy tactics.",
+        addChannel: "Add Your Channel",
+        search: "Search",
+        placeholder: "Search creators or channels...",
+        filters: "Filters",
+        allCategories: "All Categories",
+        allLanguages: "All Languages",
+        safetyTitle: "Safety:",
+        safetyText: "Creator Connect is a platform for genuine creator discovery and collaboration. We do not support fake engagement or forced subscriptions.",
+        modalTitle: "Add Your Channel",
+        noResults: "No creators match your filters. Try a different search or category.",
+        visit: "Visit Channel",
+        collab: "Collab",
+        whatsapp: "WhatsApp Share",
+        telegram: "Telegram Share",
+        demoBadge: "Demo Profile",
+        showContact: "Please contact this creator through their YouTube channel.",
+        missingFields: "Please fill in all required fields.",
+        invalidYoutube: "Please enter a valid YouTube channel URL.",
+        invalidImage: "Please enter a valid image URL.",
+        success: "Creator saved successfully.",
+        storageError: "Unable to store data in your browser. Please check browser storage settings.",
+        invalidContact: "Please enter a valid WhatsApp or Telegram link, or leave it empty."
+      },
+      hi: {
+        brand: "Creator Connect",
+        eyebrow: "क्रिएटर डिस्कवरी प्लेटफ़ॉर्म",
+        heroTitle: "क्रिएटर खोजें. सहयोग करें. साथ में बढ़ें.",
+        subtitle: "YouTubers और content creators के लिए genuine creator discovery और collaboration — fake engagement, forced subscriptions और spam से बिना.",
+        addChannel: "अपना चैनल जोड़ें",
+        search: "खोजें",
+        placeholder: "क्रिएटर या चैनल खोजें...",
+        filters: "फिल्टर",
+        allCategories: "सभी श्रेणियाँ",
+        allLanguages: "सभी भाषाएँ",
+        safetyTitle: "सुरक्षा:",
+        safetyText: "Creator Connect genuine creator discovery और collaboration का प्लेटफ़ॉर्म है। हम fake engagement या forced subscriptions का समर्थन नहीं करते हैं।",
+        modalTitle: "अपना चैनल जोड़ें",
+        noResults: "आपके फिल्टर से कोई क्रिएटर नहीं मिला। अलग खोज या श्रेणी आज़माएँ।",
+        visit: "चैनल देखें",
+        collab: "कोलैब",
+        whatsapp: "WhatsApp शेयर",
+        telegram: "Telegram शेयर",
+        demoBadge: "Demo Profile",
+        showContact: "कृपया इस क्रिएटर से उनके YouTube चैनल के माध्यम से संपर्क करें।",
+        missingFields: "कृपया सभी आवश्यक जानकारी भरें।",
+        invalidYoutube: "कृपया सही YouTube चैनल URL दें।",
+        invalidImage: "कृपया सही image URL दें।",
+        success: "क्रिएटर सफलतापूर्वक सेव हो गया।",
+        storageError: "ब्राउज़र में डेटा सेव नहीं हो सका। कृपया ब्राउज़र स्टोरेज सेटिंग्स देखें।",
+        invalidContact: "कृपया सही WhatsApp या Telegram लिंक दें, या खाली छोड़ दें।"
+      },
+      mr: {
+        brand: "Creator Connect",
+        eyebrow: "क्रिएटर डिस्कव्हरी प्लॅटफॉर्म",
+        heroTitle: "क्रिएटर शोधा. सहयोग करा. एकत्र वाढा.",
+        subtitle: "YouTubers आणि content creators साठी genuine creator discovery आणि collaboration — fake engagement, forced subscriptions आणि spamशिवाय.",
+        addChannel: "तुमचा चैनल जोडा",
+        search: "शोधा",
+        placeholder: "क्रिएटर किंवा चैनल शोधा...",
+        filters: "फिल्टर",
+        allCategories: "सर्व कॅटेगरी",
+        allLanguages: "सर्व भाषा",
+        safetyTitle: "सुरक्षितता:",
+        safetyText: "Creator Connect हा genuine creator discovery आणि collaboration साठी प्लॅटफॉर्म आहे. आम्ही fake engagement किंवा forced subscriptions समर्थन देत नाही.",
+        modalTitle: "तुमचा चैनल जोडा",
+        noResults: "तुमच्या फिल्टरशी जुळणारे creators आढळले नाहीत. वेगळी शोध किंवा श्रेणी वापरा.",
+        visit: "चैनल पहा",
+        collab: "कोलाब",
+        whatsapp: "WhatsApp शेयर",
+        telegram: "Telegram शेयर",
+        demoBadge: "Demo Profile",
+        showContact: "कृपया या क्रिएटरशी त्यांच्या YouTube चैनलमार्फत संपर्क करा.",
+        missingFields: "कृपया सर्व आवश्यक माहिती भरा.",
+        invalidYoutube: "कृपया वैध YouTube चैनल URL द्या.",
+        invalidImage: "कृपया वैध image URL द्या.",
+        success: "क्रिएटर यशस्वीरित्या सेव झाला.",
+        storageError: "ब्राउझरमध्ये डेटा सेव होऊ शकला नाही. कृपया ब्राउझर स्टोरेज सेटिंग तपासा.",
+        invalidContact: "कृपया वैध WhatsApp किंवा Telegram लिंक द्या किंवा रिकामे सोडा."
+      }
+    };
+
+    const state = {
+      lang: localStorage.getItem(LANG_KEY) || "en",
+      theme: localStorage.getItem(THEME_KEY) || "light",
+      category: "all",
+      language: "all",
+      search: "",
+      creators: []
+    };
+
+    const elements = {
+      body: document.body,
+      brand: document.getElementById("brandText"),
+      eyebrow: document.getElementById("eyebrowText"),
+      title: document.getElementById("heroTitle"),
+      subtitle: document.getElementById("heroSubtitle"),
+      addChannelText: document.getElementById("addChannelText"),
+      searchBtnText: document.getElementById("searchBtnText"),
+      searchInput: document.getElementById("searchInput"),
+      categoryChips: document.getElementById("categoryChips"),
+      creatorGrid: document.getElementById("creatorGrid"),
+      noResults: document.getElementById("noResults"),
+      filterLabel: document.getElementById("filterLabel"),
+      categoryFilter: document.getElementById("categoryFilter"),
+      languageFilter: document.getElementById("languageFilter"),
+      featureTitle: document.getElementById("featuredTitle"),
+      safetyTitle: document.getElementById("safetyTitle"),
+      safetyText: document.getElementById("safetyText"),
+      allCategoryOpt: document.getElementById("allCategoryOpt"),
+      allLanguageOpt: document.getElementById("allLanguageOpt"),
+      modalTitle: document.getElementById("modalTitle"),
+      modal: document.getElementById("channelModal"),
+      form: document.getElementById("channelForm"),
+      toast: document.getElementById("toast"),
+      themeToggle: document.getElementById("themeToggle"),
+      searchButton: document.getElementById("searchButton"),
+      addChannelButton: document.getElementById("addChannelButton")
+    };
+
+    function safeParseJSON(value) {
+      try {
+        return value ? JSON.parse(value) : [];
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function showToast(message) {
+      elements.toast.textContent = message;
+      elements.toast.classList.add("show");
+      clearTimeout(showToast.timer);
+      showToast.timer = setTimeout(() => {
+        elements.toast.classList.remove("show");
+      }, 2500);
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.creators));
+      } catch (error) {
+        console.error("localStorage write error:", error);
+        showToast(translations[state.lang].storageError);
+      }
+    }
+
+    function loadCreators() {
+      const stored = safeParseJSON(localStorage.getItem(STORAGE_KEY));
+      if (Array.isArray(stored) && stored.length) {
+        state.creators = stored;
+      } else {
+        state.creators = [...demoCreators];
+        saveState();
+      }
+    }
+
+    function applyTheme() {
+      const isDark = state.theme === "dark";
+      elements.body.classList.toggle("dark", isDark);
+      elements.themeToggle.textContent = isDark ? "☀️" : "🌙";
+      localStorage.setItem(THEME_KEY, state.theme);
+    }
+
+    function applyLanguage() {
+      const dict = translations[state.lang];
+      elements.brand.textContent = dict.brand;
+      elements.eyebrow.textContent = dict.eyebrow;
+      elements.title.textContent = dict.heroTitle;
+      elements.subtitle.textContent = dict.subtitle;
+      elements.addChannelText.textContent = dict.addChannel;
+      elements.searchBtnText.textContent = dict.search;
+      elements.searchInput.placeholder = dict.placeholder;
+      elements.filterLabel.textContent = dict.filters;
+      elements.allCategoryOpt.textContent = dict.allCategories;
+      elements.allLanguageOpt.textContent = dict.allLanguages;
+      elements.featureTitle.textContent = "Featured Creators";
+      elements.safetyTitle.textContent = dict.safetyTitle;
+      elements.safetyText.textContent = dict.safetyText;
+      elements.modalTitle.textContent = dict.modalTitle;
+      elements.form.querySelector('button[type="submit"]').textContent = dict.addChannel;
+      document.querySelectorAll(".lang-btn").forEach((button) => {
+        button.classList.toggle("active", button.dataset.lang === state.lang);
+      });
+      localStorage.setItem(LANG_KEY, state.lang);
+      renderCategoryChips();
+      renderCreators();
+    }
+
+    function getCategories() {
+      const categories = new Set();
+      state.creators.forEach((creator) => categories.add(creator.category));
+      return Array.from(categories).sort();
+    }
+
+    function renderCategoryChips() {
+      const categories = ["all", ...getCategories()];
+      const chipList = [];
+      categories.forEach((category) => {
+        const active = state.category === category;
+        const text = category === "all" ? translations[state.lang].allCategories : category;
+        chipList.push(`
+          <button type="button" class="chip ${active ? "active" : ""}" data-category="${category}">
+            ${text}
+          </button>
+        `);
+      });
+      elements.categoryChips.innerHTML = chipList.join("");
+      elements.categoryChips.querySelectorAll(".chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          state.category = chip.dataset.category;
+          renderCategoryChips();
+          renderCreators();
+        });
+      });
+    }
+
+    function renderCategoryOptions() {
+      const categories = ["all", ...getCategories()];
+      const options = categories
+        .map((category) => {
+          if (category === "all") {
+            return `<option value="all">${translations[state.lang].allCategories}</option>`;
+          }
+          return `<option value="${category}">${category}</option>`;
+        })
+        .join("");
+
+      elements.categoryFilter.innerHTML = options;
+      elements.categoryFilter.value = state.category;
+
+      const languages = ["all", ...new Set(state.creators.map((creator) => creator.language).filter(Boolean))];
+      elements.languageFilter.innerHTML = languages
+        .map((lang) => lang === "all"
+          ? `<option value="all">${translations[state.lang].allLanguages}</option>`
+          : `<option value="${lang}">${lang}</option>`
+        )
+        .join("");
+      elements.languageFilter.value = state.language;
+    }
+
+    function filteredCreators() {
+      const query = state.search.trim().toLowerCase();
+      return state.creators.filter((creator) => {
+        const matchesText =
+          !query ||
+          creator.name.toLowerCase().includes(query) ||
+          creator.channelName.toLowerCase().includes(query) ||
+          creator.description.toLowerCase().includes(query);
+
+        const matchesCategory =
+          state.category === "all" || creator.category === state.category;
+
+        const matchesLanguage =
+          state.language === "all" || creator.language === state.language;
+
+        return matchesText && matchesCategory && matchesLanguage;
+      });
+    }
+
+    function renderCreators() {
+      renderCategoryOptions();
+      const creators = filteredCreators();
+
+      if (!creators.length) {
+        elements.creatorGrid.innerHTML = "";
+        elements.noResults.textContent = translations[state.lang].noResults;
+        elements.noResults.style.display = "block";
+        return;
+      }
+
+      elements.noResults.style.display = "none";
+
+      const sorted = [...creators].sort((a, b) => {
+        if (a.featured && !b.featured) return -1;
+        if (!a.featured && b.featured) return 1;
+        return 0;
+      });
+
+      elements.creatorGrid.innerHTML = sorted.map((creator) => {
+        const image = creator.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80";
+        const contact = (creator.contact || "").trim();
+        const contactType = contact.includes("wa.me") || contact.includes("whatsapp") ? "whatsapp" :
+          contact.includes("t.me") || contact.includes("telegram") ? "telegram" : "none";
+
+        return `
+          <article class="creator-card">
+            <div class="creator-banner">
+              ${creator.demo ? `<span class="badge">${translations[state.lang].demoBadge}</span>` : ""}
+              <img class="creator-avatar" src="${image}" alt="${creator.channelName}" />
+            </div>
+
+            <div class="creator-body">
+              <div class="creator-top">
+                <h3 class="creator-name">${creator.channelName}</h3>
+              </div>
+
+              <div class="meta-row">
+                <span class="meta-pill">${creator.category}</span>
+                <span class="meta-pill">${creator.language}</span>
+              </div>
+
+              <p class="description">${creator.description}</p>
+
+              <div class="cta-row">
+                <a class="card-btn primary" href="${creator.url}" target="_blank" rel="noreferrer noopener">${translations[state.lang].visit}</a>
+                <button class="card-btn" type="button" data-action="collab" data-id="${creator.id}">${translations[state.lang].collab}</button>
+              </div>
+
+              <div class="cta-row">
+                <button class="card-btn share-whatsapp" type="button" data-action="share-wa" data-id="${creator.id}">${translations[state.lang].whatsapp}</button>
+                <button class="card-btn share-telegram" type="button" data-action="share-tg" data-id="${creator.id}">${translations[state.lang].telegram}</button>
+              </div>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      bindCardActions();
+    }
+
+    function bindCardActions() {
+      document.querySelectorAll("[data-action='collab']").forEach((button) => {
+        button.addEventListener("click", () => {
+          const creator = state.creators.find((item) => item.id === button.dataset.id);
+          if (!creator) return;
+
+          const contact = (creator.contact || "").trim();
+
+          if (contact) {
+            if (contact.includes("wa.me") || contact.includes("whatsapp")) {
+              window.open(contact, "_blank", "noopener,noreferrer");
+            } else if (contact.includes("t.me") || contact.includes("telegram")) {
+              window.open(contact, "_blank", "noopener,noreferrer");
+            } else {
+              showToast(translations[state.lang].showContact);
+            }
+          } else {
+            showToast(translations[state.lang].showContact);
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-action='share-wa']").forEach((button) => {
+        button.addEventListener("click", () => {
+          const creator = state.creators.find((item) => item.id === button.dataset.id);
+          if (!creator) return;
+          const text = encodeURIComponent(`Check out ${creator.channelName} on Creator Connect: ${creator.url}`);
+          window.open(`https://api.whatsapp.com/send?text=${text}`, "_blank", "noopener,noreferrer");
+        });
+      });
+
+      document.querySelectorAll("[data-action='share-tg']").forEach((button) => {
+        button.addEventListener("click", () => {
+          const creator = state.creators.find((item) => item.id === button.dataset.id);
+          if (!creator) return;
+          const text = encodeURIComponent(`Check out ${creator.channelName}: ${creator.url}`);
+          window.open(`https://t.me/share/url?url=${encodeURIComponent(creator.url)}&text=${text}`, "_blank", "noopener,noreferrer");
+        });
+      });
+    }
+
+    function validateYouTubeUrl(url) {
+      if (!url || !url.trim()) return false;
+      const value = url.trim();
+      const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com\/(channel\/|@|c\/|user\/)|youtu\.be\/|m\.youtube\.com\/)/i;
+      return youtubeRegex.test(value);
+    }
+
+    function isValidImageUrl(url) {
+      if (!url || !url.trim()) return true;
+      const value = url.trim();
+      return /^(https?:\/\/)[^\s/$.?#].[^\s]*\.(jpg|jpeg|png|gif|webp|svg)(\?.*)?$/i.test(value) || /^https?:\/\/images\.unsplash\.com\/.+/i.test(value);
+    }
+
+    function validateContact(value) {
+      if (!value || !value.trim()) return true;
+      const contact = value.trim();
+      const valid = /^(https?:\/\/)?(wa\.me\/|api\.whatsapp\.com\/send\?phone=|t\.me\/|telegram\.me\/)/i.test(contact) ||
+        /^(https?:\/\/)?(www\.)?(whatsapp\.com|telegram\.org)/i.test(contact);
+      return valid;
+    }
+
+    function openCreateModal() {
+      elements.modal.classList.add("show");
+      elements.modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeCreateModal() {
+      elements.modal.classList.remove("show");
+      elements.modal.setAttribute("aria-hidden", "true");
+      elements.form.reset();
+    }
+
+    function getFormValues() {
+      return {
+        name: document.getElementById("creatorName").value.trim(),
+        channelName: document.getElementById("youtubeChannelName").value.trim(),
+        url: document.getElementById("youtubeUrl").value.trim(),
+        category: document.getElementById("category").value.trim(),
+        language: document.getElementById("language").value.trim(),
+        description: document.getElementById("shortDescription").value.trim(),
+        collabType: document.getElementById("collabType").value.trim(),
+        contact: document.getElementById("contact").value.trim(),
+        image: document.getElementById("profileImage").value.trim(),
+        demo: false,
+        featured: false
+      };
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      const values = getFormValues();
+      const dict = translations[state.lang];
+
+      if (!values.name || !values.channelName || !values.url || !values.category || !values.language || !values.description || !values.collabType) {
+        showToast(dict.missingFields);
+        return;
+      }
+
+      if (!validateYouTubeUrl(values.url)) {
+        showToast(dict.invalidYoutube);
+        return;
+      }
+
+      if (!validateContact(values.contact)) {
+        showToast(dict.invalidContact);
+        return;
+      }
+
+      if (!isValidImageUrl(values.image)) {
+        showToast(dict.invalidImage);
+        return;
+      }
+
+      const creator = {
+        id: `creator-${Date.now()}-${Math.random().toString(16).slice(2, 8)}`,
+        name: values.name,
+        channelName: values.channelName,
+        url: values.url,
+        category: values.category,
+        language: values.language,
+        description: values.description,
+        collabType: values.collabType,
+        contact: values.contact,
+        image: values.image || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
+        demo: false,
+        featured: false
+      };
+
+      state.creators = [creator, ...state.creators];
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state.creators));
+        showToast(dict.success);
+      } catch (error) {
+        console.error("localStorage save failed:", error);
+        showToast(dict.storageError);
+      }
+
+      closeCreateModal();
+      renderCreators();
+    }
+
+    function attachEvents() {
+      elements.themeToggle.addEventListener("click", () => {
+        state.theme = state.theme === "dark" ? "light" : "dark";
+        applyTheme();
+      });
+
+      document.querySelectorAll(".lang-btn").forEach((button) => {
+        button.addEventListener("click", () => {
+          state.lang = button.dataset.lang;
+          applyLanguage();
+        });
+      });
+
+      elements.searchInput.addEventListener("input", (event) => {
+        state.search = event.target.value;
+        renderCreators();
+      });
+
+      elements.searchButton.addEventListener("click", () => {
+        renderCreators();
+      });
+
+      elements.addChannelButton.addEventListener("click", openCreateModal);
+
+      document.getElementById("closeModalBtn").addEventListener("click", closeCreateModal);
+      document.getElementById("cancelBtn").addEventListener("click", closeCreateModal);
+
+      elements.categoryFilter.addEventListener("change", (event) => {
+        state.category = event.target.value;
+        renderCategoryChips();
+        renderCreators();
+      });
+
+      elements.languageFilter.addEventListener("change", (event) => {
+        state.language = event.target.value;
+        renderCreators();
+      });
+
+      elements.form.addEventListener("submit", handleSubmit);
+
+      elements.modal.addEventListener("click", (event) => {
+        if (event.target === elements.modal) {
+          closeCreateModal();
+        }
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && elements.modal.classList.contains("show")) {
+          closeCreateModal();
+        }
+      });
+    }
+
+    function init() {
+      try {
+        const savedTheme = localStorage.getItem(THEME_KEY);
+        if (savedTheme === "dark" || savedTheme === "light") {
+          state.theme = savedTheme;
+        }
+        const savedLang = localStorage.getItem(LANG_KEY);
+        if (savedLang === "en" || savedLang === "hi" || savedLang === "mr") {
+          state.lang = savedLang;
+        }
+      } catch (error) {
+        console.error("localStorage read error:", error);
+      }
+
+      loadCreators();
+      attachEvents();
+      applyTheme();
+      applyLanguage();
+      renderCategoryChips();
+      renderCreators();
+    }
+
+    init();
+  </script>
+</body>
+</html>
